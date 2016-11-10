@@ -57,12 +57,12 @@ class MyTest(unittest.TestCase):
 		self.assertEqual(convert_to_numerals('123'), "919293")
 		self.assertEqual(convert_to_numerals('abc'), "111213")
 		self.assertEqual(convert_to_numerals('123abc'), "919293111213")
-		self.assertEqual(convert_to_numerals('123 abc'), "91929355111213")
+		self.assertEqual(convert_to_numerals('123 abc'), "91929300111213")
 	def test_convert_to_alpha(self):
 		self.assertEqual(convert_to_alpha('919293'), "123")
 		self.assertEqual(convert_to_alpha('111213'), "abc")
 		self.assertEqual(convert_to_alpha('919293111213'), "123abc")
-		self.assertEqual(convert_to_alpha('91929355111213'), "123 abc")
+		self.assertEqual(convert_to_alpha('91929300111213'), "123 abc")
 	def test_reverse_dict_keys_values(self):
 		self.assertEqual(next(reverse_dict_keys_values({'a': '1', 'b': '2'})), {'1': 'a', '2': 'b'})
 
@@ -84,7 +84,7 @@ def split_by_n(sequence, n):
 	return [x for x in split_by_n_generator(sequence, n)]
 
 def convert_to_numerals(str_input):
-	#converts string to numerals based on the conversion key
+	#converts string to numerals base on the conversion key
 	split_input = split_by_n(str_input, 1) 
 	for i in range(len(split_input)):
 		split_input[i] = conversion_key[split_input[i]]
