@@ -13,6 +13,8 @@ import random
 
 import textConvert
 
+_encrypt_chunk_size = 1
+
 def full_test():
     """series of prints and function calls to test kCrypt as a whole    """
 
@@ -22,10 +24,10 @@ def full_test():
     numeral_sequence = textConvert.convert_to_numerals(sequence)
     print "numeral_sequence: %s" % numeral_sequence
 
-    encrypted_sequence = split_encrypt(numeral_sequence, encrypt_chunk_size)
+    encrypted_sequence = split_encrypt(numeral_sequence, _encrypt_chunk_size)
     print "encrypted_sequence: %s" % encrypted_sequence
 
-    decrypted_sequence = split_decrypt(encrypted_sequence, encrypt_chunk_size)
+    decrypted_sequence = split_decrypt(encrypted_sequence, _encrypt_chunk_size)
     print "decrypted_numeral_sequence: %s" % decrypted_sequence
 
     decrypted_sequence = textConvert.convert_to_alpha(decrypted_sequence)
@@ -34,7 +36,7 @@ def full_test():
 
 def generate_keys(prime_range_start, prime_range_stop):
     """generates RSA keys as tuples the original primes used to generate the keys are generated from a range between the given parameters"""
-    p, q = randomPrime(prime_range_start, prime_range_stop)
+    p, q = random_prime(prime_range_start, prime_range_stop)
     n = (p - 1) * (q - 1)
     e = find_public_exponent(n)
     d = find_private_exponent(n, e)
@@ -42,36 +44,38 @@ def generate_keys(prime_range_start, prime_range_stop):
     private_key = (p*q, d)
     return (public_key, private_key)
 
-def randomPrime(start, stop):
+def random_prime(start, stop):
     """generates a tuple of two random prime numbers within the range of the given parameters (start, stop)"""
-    list_of_primes = primeList(start, stop)
+    list_of_primes = prime_list(start, stop)
     #random_indice = random.choice(list_of_primes) #subtract extra to balance next lines addition so you don't go out of range
     return random.choice(list_of_primes), random.choice(list_of_primes)
 
-def primeList(start, stop): 
+def prime_list(start, stop): 
     """Generates a list of prime numbers between the two given parameters (start, stop)"""    
-    if stop == 2: return [2]
-    elif start < 3: start = 3
-    return [x for x in range(start, stop) if isPrime(x)]
+    if stop == 2: 
+    	return [2]
+    elif start < 3: 
+    	start = 3
+    return [x for x in range(start, stop) if is_prime(x)]
 
-def isPrime(n):
+def is_prime(number):
     """tests whether a number is prime or not"""
-    for x in range(2, n):
-        if n % x == 0:
+    for i in range(2, number):
+        if number % i == 0:
             return False
     return True
 
 
 def find_public_exponent(n):
     """calculates the public key exponent ('e') for the RSA encryption algorithm"""
-    list_of_coprimes = coprimeList(n)
+    list_of_coprimes = coprime_list(n)
     return list_of_coprimes[random.randint(0, 50)] #first 50 indices of coprimes
 
-def coprimeList(n):
+def coprime_list(n):
     """returns a list of coprimes of a number"""
-    return [x for x in range(3, n, 2) if isCoprime(x, n)]
+    return [x for x in range(3, n, 2) if is_coprime(x, n)]
 
-def isCoprime(a, b):
+def is_coprime(a, b):
     """tests whether two numbers are coprime or not"""
     return greatest_common_denominator(a, b) == 1
 
@@ -115,7 +119,7 @@ def split_encrypt(sequence, n):
     """encrypts a sequence in n sized chunks and returns the list result (sequence, n)"""
     sequence = list(split_by_n(sequence, n))
     encrypted_sequence = []
-    for i in range(len(sequence)):
+    for i, item in enumerate(sequence):
         encrypted_sequence.append(encrypt(int(sequence[i]), keys[0]))
     return encrypted_sequence
 
@@ -123,12 +127,10 @@ def split_encrypt(sequence, n):
 def split_decrypt(encrypted_sequence, n):
     """derypts a sequence in n sized chunks and returns the joined result (encrypted_sequence, n)"""
     decrypted_sequence = []
-    for i in range(len(encrypted_sequence)):
+    for i, item in enumerate(encrypted_sequence):
         decrypted_sequence.append(decrypt(int(encrypted_sequence[i]), keys[1]))
     return ''.join(textConvert.convert_long_list_to_string_list(decrypted_sequence))
 
-
-encrypt_chunk_size = 1
 
 if __name__ == '__main__':
 
