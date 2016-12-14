@@ -6,6 +6,8 @@ TODO:
     - add config file for settings like encrypt chunk size and prime range
     - make faster (incredibly slow bare minimum first build)
     - have script store keys into a file
+
+testing VS Code Git integration..
 """
 
 import random
