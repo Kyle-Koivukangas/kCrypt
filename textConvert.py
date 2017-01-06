@@ -111,4 +111,8 @@ def convert_to_alpha(int_input):
     return ''.join(split_input)
 
 if __name__ == '__main__':
+    text = "word1 word2 word3"
+    print convert_to_numerals(text)
     unittest.main()
+    
+

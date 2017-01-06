@@ -130,10 +130,9 @@ def split_by_n(sequence, n):
 
 def split_encrypt(sequence, split_size):
     """encrypts a sequence of chunks and returns the result as a list (sequence, n)"""
-    sequence = list(split_by_n(sequence, split_size))
     encrypted_sequence = []
-    for i, item in enumerate(sequence):
-        encrypted_sequence.append(encrypt(int(sequence[i]), keys[0]))
+    for number in sequence:
+        encrypted_sequence.append(encrypt(int(number), keys[0]))
     return encrypted_sequence
 
 
