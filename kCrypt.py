@@ -6,34 +6,35 @@ TODO:
     - add config file for settings like encrypt chunk size and prime range
     - make faster (incredibly slow bare minimum first build)
     - have script store keys into a file
-
-testing VS Code Git integration..
 """
 
 import random
+from queue import Queue
+import threading
+import time
 
 import textConvert
 
-_encrypt_chunk_size = 1
+_encrypt_chunk_size = 2
 
 
 def full_test():
     """series of prints and function calls to test kCrypt as a whole    """
 
     sequence = "word1 word2 word3"
-    print "sequence: %s" % sequence
+    print("sequence: ", sequence)
 
     numeral_sequence = textConvert.convert_to_numerals(sequence)
-    print "numeral_sequence: %s" % numeral_sequence
+    print("numeral_sequence: ", numeral_sequence)
 
     encrypted_sequence = split_encrypt(numeral_sequence, _encrypt_chunk_size)
-    print "encrypted_sequence: %s" % encrypted_sequence
+    print("encrypted_sequence: %s" % (encrypted_sequence))
 
     decrypted_sequence = split_decrypt(encrypted_sequence)
-    print "decrypted_numeral_sequence: %s" % decrypted_sequence
+    print("decrypted_numeral_sequence: %s" %(decrypted_sequence))
 
     decrypted_sequence = textConvert.convert_to_alpha(decrypted_sequence)
-    print "decrypted_sequence: %s" % decrypted_sequence
+    print("decrypted_sequence: %s" % (decrypted_sequence))
 
 
 def generate_keys(prime_range_start, prime_range_stop):
@@ -130,9 +131,10 @@ def split_by_n(sequence, n):
 
 def split_encrypt(sequence, split_size):
     """encrypts a sequence of chunks and returns the result as a list (sequence, n)"""
+    sequence = list(split_by_n(sequence, split_size))
     encrypted_sequence = []
-    for number in sequence:
-        encrypted_sequence.append(encrypt(int(number), keys[0]))
+    for i, item in enumerate(sequence):
+        encrypted_sequence.append(encrypt(int(sequence[i]), keys[0]))
     return encrypted_sequence
 
 
@@ -146,12 +148,13 @@ def split_decrypt(encrypted_sequence):
 
 if __name__ == '__main__':
 
-    keys = generate_keys(1024, 2048)
+    #keys = generate_keys(1024, 2048)
     # print keys
-    # keys = ((2249879, 61), (2249879, 368341))  #debug keys
-    #keys = ((3233, 17), (3233, 2753))
-
+    #keys = ((2249879, 61), (2249879, 368341))  #debug keys
+    keys = ((3233, 17), (3233, 2753))
+    start = time.time()
     full_test()
+    print("total time taken: ", time.time()-start)
 else:
     # else statement to temporarily add debug keys for when calling kCrypt to test threading
     #keys = ((2249879, 61), (2249879, 368341))

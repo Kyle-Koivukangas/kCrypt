@@ -68,13 +68,12 @@ class MyTest(unittest.TestCase):
         self.assertEqual(convert_to_alpha('91929355111213'), "123 abc")
 
     def test_reverse_dict_keys_values(self):
-        self.assertEqual(next(reverse_dict_keys_values(
-            {'a': '1', 'b': '2'})), {'1': 'a', '2': 'b'})
+        self.assertEqual(next(reverse_dict_keys_values({'a': '1', 'b': '2'})), {'1': 'a', '2': 'b'})
 
 
 def reverse_dict_keys_values(dict_input):
     # flip the keys and values in a dictionary
-    yield {v: k for k, v in dict_input.iteritems()}
+    yield {v: k for k, v in dict_input.items()}
 
 
 def convert_long_list_to_string_list(long_list):
@@ -111,8 +110,4 @@ def convert_to_alpha(int_input):
     return ''.join(split_input)
 
 if __name__ == '__main__':
-    text = "word1 word2 word3"
-    print convert_to_numerals(text)
     unittest.main()
-    
-
